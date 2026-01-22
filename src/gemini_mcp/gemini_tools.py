@@ -72,11 +72,11 @@ async def generate_image(
 
     logger.info(f"Generating image with model={model}, aspect_ratio={aspect_ratio}, resolution={resolution}")
 
+    # Note: image_size is not supported on AI Studio, only aspect_ratio
     config = types.GenerateContentConfig(
         response_modalities=["TEXT", "IMAGE"],
         image_config=types.ImageConfig(
             aspect_ratio=aspect_ratio,
-            image_size=resolution,
         ),
     )
 
@@ -221,11 +221,11 @@ async def generate_with_references(
     for ref_path in reference_images:
         content.append(Image.open(ref_path))
 
+    # Note: image_size is not supported on AI Studio, only aspect_ratio
     config = types.GenerateContentConfig(
         response_modalities=["TEXT", "IMAGE"],
         image_config=types.ImageConfig(
             aspect_ratio=aspect_ratio,
-            image_size=resolution,
         ),
     )
 
