@@ -1,7 +1,8 @@
 """Gemini MCP Server - Main entry point."""
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
+from . import __version__
 from .gemini_tools import (
     describe_image,
     edit_image,
@@ -21,8 +22,8 @@ from .imagemagick_tools import (
     rotate_image,
 )
 
-# Initialize FastMCP server
-mcp = FastMCP("gemini-image")
+# Initialize MCP server
+mcp = MCPServer("gemini-image", version=__version__)
 
 
 # ============================================================================

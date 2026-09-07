@@ -6,6 +6,7 @@ from pathlib import Path
 
 from google import genai
 from google.genai import types
+from mcp.server.mcpserver.exceptions import ToolError
 from PIL import Image
 
 from .utils import (
@@ -26,7 +27,7 @@ def get_client() -> genai.Client:
     """Get Gemini API client."""
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("GEMINI_API_KEY environment variable is not set")
+        raise ToolError("GEMINI_API_KEY environment variable is not set")
     return genai.Client(api_key=api_key)
 
 
@@ -41,7 +42,7 @@ def _retry_api_call(func, *args, **kwargs):
             logger.warning(f"API call failed (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
             if attempt < MAX_RETRIES - 1:
                 time.sleep(RETRY_DELAY * (attempt + 1))  # Exponential backoff
-    raise last_error
+    raise ToolError(f"Gemini API call failed after {MAX_RETRIES} attempts: {last_error}") from last_error
 
 
 async def generate_image(
